@@ -64,7 +64,6 @@ def set_driver(driver_path, headless_flg):
 
 # main処理
 
-
 def main():
     
     # search_keyword = "高収入"
@@ -122,6 +121,8 @@ def main():
     # ページ終了まで繰り返し取得
     while True:
         
+        page_view()
+        
         try:
             next_btn = driver.find_element_by_class_name('iconFont--arrowLeft')
             next_btn.click()
@@ -131,7 +132,7 @@ def main():
         
         
         
-        page_view()
+        
         # # 検索結果の一番上の会社名を取得
         # name_list = driver.find_elements_by_class_name("cassetteRecruit__name")
         
@@ -153,6 +154,7 @@ def main():
             
         # # csv出力
         # df.to_csv('to_csv_out.csv', mode = 'a', header = False)
+
        
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
