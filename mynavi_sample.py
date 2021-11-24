@@ -5,10 +5,36 @@ from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 import time
+import datetime
 import pandas as pd
 from webdriver_manager.chrome import ChromeDriverManager
 
+# 定数は大文字の変数名が一般的
+# {}に変数名をセットすると、後でformatで置換可能
+LOG_FILE_PATH = "log_{datetime}.log"
+EXP_CSV_PATH="results/exp_list_{search_keyword}_{datetime}.csv"
+log_file_path=LOG_FILE_PATH.format(datetime=datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S'))
 
+
+def makedir_for_filepath(filepath: str):
+    '''
+    ファイルを格納するフォルダを作成する
+    '''
+    # exist_ok=Trueとすると、フォルダが存在してもエラーにならない
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+
+def log(txt):
+    '''
+    ログファイルおよびコンソール出力
+    (学習用に１から作成しているが、通常はloggingライブラリを推奨)
+    '''
+    now = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+    logStr = '[%s: %s] %s' % ('log',now , txt)
+    # ログ出力
+    makedir_for_filepath(log_file_path)
+    with open(log_file_path, 'a', encoding='utf-8_sig') as f:
+        f.write(logStr + '\n')
+    print(logStr)
 
 # Chromeを起動する関数
 
