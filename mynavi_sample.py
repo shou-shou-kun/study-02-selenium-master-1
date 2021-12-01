@@ -61,13 +61,22 @@ def set_driver(driver_path, headless_flg):
         return Chrome(executable_path=os.getcwd() + "/" + driver_path,options=options)
     else:
         return Firefox(executable_path=os.getcwd()  + "/" + driver_path,options=options)
-
+    
 # main処理
-
-def main():
+def main(): 
+    
+    # 何ページ目
+    page = 0
     
     # search_keyword = "高収入"
     search_keyword = input("検索ワードを入力してください　")
+    
+    log("処理開始")
+    log("検索キーワード:{}".format(search_keyword))
+    # 検索件数
+    # total_count = driver.find_elements_by_class_name("js__searchRecruit--count")
+    # print('検索件数 ： ',total_count) 
+    print('検索ワード : ',search_keyword) 
     
     # driverを起動
     
@@ -93,8 +102,8 @@ def main():
         "topSearch__text").send_keys(search_keyword)
     # 検索ボタンクリック
     driver.find_element_by_class_name("topSearch__button").click()
-
-    def page_view():
+    
+    def page_view(): 
     
         # ページ終了まで繰り返し取得
         # 検索結果の一番上の会社名を取得
@@ -116,6 +125,10 @@ def main():
             
         # csv出力
         df.to_csv('to_csv_out.csv', mode = 'a', header = False) 
+         
+    page += 1
+    print (page,'ページ目')
+    log("{}ページ目".format(page))
            
     # ２ページ目（以降）の表示
     # ページ終了まで繰り返し取得
@@ -126,35 +139,15 @@ def main():
         try:
             next_btn = driver.find_element_by_class_name('iconFont--arrowLeft')
             next_btn.click()
+            page += 1
+            print (page,'ページ目')
+            log("{}ページ目".format(page))
         except NoSuchElementException:
             driver.quit()
             break    
         
         
-        
-        
-        # # 検索結果の一番上の会社名を取得
-        # name_list = driver.find_elements_by_class_name("cassetteRecruit__name")
-        
-        # # 空のDataFrame作成
-        # df = pd.DataFrame()
-
-        
-        
-        # # 1ページ分繰り返し
-        # print(len(name_list))
-        # for name in name_list:
-        #     print(name.text)
-        #     # DataFrameに対して辞書形式でデータを追加する
-        #     df = df.append(
-        #         {"会社名": name.text, 
-        #         "項目B": "",
-        #         "項目C": ""}, 
-        #         ignore_index=True)
-            
-        # # csv出力
-        # df.to_csv('to_csv_out.csv', mode = 'a', header = False)
-
+    log("処理完了")    
        
 
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
