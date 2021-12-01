@@ -62,9 +62,7 @@ def set_driver(driver_path, headless_flg):
     else:
         return Firefox(executable_path=os.getcwd()  + "/" + driver_path,options=options)
 
-def page_view(): 
-    # chrome　driverの自動読み込み 
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+def page_view(driver): 
     # ページ終了まで繰り返し取得
     # 検索結果の一番上の会社名を取得
     name_list = driver.find_elements_by_class_name("cassetteRecruit__name")
@@ -127,7 +125,7 @@ def main():
     # 検索ボタンクリック
     driver.find_element_by_class_name("topSearch__button").click()
     
-    page_view()      
+    page_view(driver)      
     page += 1
     print (page,'ページ目')
     log("{}ページ目".format(page))
@@ -136,7 +134,7 @@ def main():
     # ページ終了まで繰り返し取得
     while True:
         
-        page_view()
+        page_view(driver)
         
         try:
             next_btn = driver.find_element_by_class_name('iconFont--arrowLeft')
