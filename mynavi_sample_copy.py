@@ -125,10 +125,10 @@ def main():
     # 検索ボタンクリック
     driver.find_element_by_class_name("topSearch__button").click()
     
-    page_view(driver)      
-    page += 1
-    print (page,'ページ目')
-    log("{}ページ目".format(page))
+    # page_view(driver)      
+    # page += 1
+    # print (page,'ページ目')
+    # log("{}ページ目".format(page))
            
     # ２ページ目（以降）の表示
     # ページ終了まで繰り返し取得

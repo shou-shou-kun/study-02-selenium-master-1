@@ -1,3 +1,4 @@
+from itertools import count
 import os
 from selenium.webdriver import Chrome, ChromeOptions
 from selenium.webdriver import Firefox
@@ -65,7 +66,7 @@ def set_driver(driver_path, headless_flg):
 def page_view(driver): 
     # ページ終了まで繰り返し取得
     # 検索結果の一番上の会社名を取得
-    name_list = driver.find_elements_by_class_name("cassetteRecruit__name")
+    name_list = driver.find_elements_by_class_name("cassetteRecruit__copy")
     
     # 空のDataFrame作成
     df = pd.DataFrame()
@@ -124,29 +125,23 @@ def main():
         "topSearch__text").send_keys(search_keyword)
     # 検索ボタンクリック
     driver.find_element_by_class_name("topSearch__button").click()
-    
-    page_view(driver)      
-    page += 1
-    print (page,'ページ目')
-    log("{}ページ目".format(page))
+
            
-    # ２ページ目（以降）の表示
+    # ページの表示
     # ページ終了まで繰り返し取得
     while True:
-        
+        page += 1
+        print (page,'ページ目')
+        log("{}ページ目".format(page))
         page_view(driver)
         
         try:
             next_btn = driver.find_element_by_class_name('iconFont--arrowLeft')
             next_btn.click()
-            page += 1
-            print (page,'ページ目')
-            log("{}ページ目".format(page))
         except NoSuchElementException:
             driver.quit()
             break    
-        
-        
+    
     log("処理完了")    
        
 
