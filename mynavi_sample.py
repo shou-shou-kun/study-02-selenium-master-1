@@ -5,6 +5,7 @@ from selenium.webdriver import Firefox
 from selenium.webdriver.firefox.options import Options
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
 import time
 import datetime
 import pandas as pd
@@ -65,20 +66,25 @@ def set_driver(driver_path, headless_flg):
 
 def page_view(driver): 
     # ページ終了まで繰り返し取得
-    # 検索結果の一番上の会社名を取得
-    name_list = driver.find_elements_by_class_name("cassetteRecruit__copy")
+    # 検索結果の会社のデータをまるっと取得
+    name_list = driver.find_elements(by=By.CSS_SELECTOR, value=".cassetteRecruit")
     
     # 空のDataFrame作成
     df = pd.DataFrame()
 
     # 1ページ分繰り返し
-    print(len(name_list))
-    for name in name_list:
-        print(name.text)
+    # print(len(name_list))
+
+    for name_list in name_list:
+        
+        name = name_list.find_element(by=By.CSS_SELECTOR, value=".cassetteRecruit__name").text
+        copy = name_list.find_element(by=By.CSS_SELECTOR, value=".cassetteRecruit__copy").text
+        
+        print(name,copy)
         # DataFrameに対して辞書形式でデータを追加する
         df = df.append(
-            {"会社名": name.text, 
-            "項目B": "",
+            {"会社名": name, 
+            "コピー": copy,
             "項目C": ""}, 
             ignore_index=True)
         
@@ -148,3 +154,4 @@ def main():
 # 直接起動された場合はmain()を起動(モジュールとして呼び出された場合は起動しないようにするため)
 if __name__ == "__main__":
     main()
+    
